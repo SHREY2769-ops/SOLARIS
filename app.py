@@ -1,4 +1,5 @@
 """SOLARIS: the main program. Run this file to start everything."""
+
 import subprocess
 import sys
 import threading
@@ -18,7 +19,9 @@ import voice
 import wallpaper
 
 app = Flask(__name__, static_folder="public", static_url_path="")
+
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
+
 _HOSTS = {f"localhost:{config.PORT}", f"127.0.0.1:{config.PORT}"}
 
 
@@ -45,7 +48,14 @@ def index():
 @app.get("/api/status")
 def status():
     ready = bool(config.GEMINI_KEY) if config.PROVIDER == "gemini" else True
-    return jsonify(name=config.NAME, version=config.VERSION, configured=ready, themes=themes.public(), provider=config.PROVIDER, voice_style=config.VOICE_STYLE)
+    return jsonify(
+        name=config.NAME,
+        version=config.VERSION,
+        configured=ready,
+        themes=themes.public(),
+        provider=config.PROVIDER,
+        voice_style=config.VOICE_STYLE,
+    )
 
 
 @app.post("/api/chat")
