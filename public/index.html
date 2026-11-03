@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOLARIS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Floating Orb Widget -->
+        <div id="floating-orb" class="orb" draggable="true">
+            <div class="orb-core">
+                <div class="orb-ring orb-ring-1"></div>
+                <div class="orb-ring orb-ring-2"></div>
+                <div class="orb-ring orb-ring-3"></div>
+                <div class="orb-center">
+                    <span class="orb-text">S.O.L.A.R.I.S</span>
+                    <div class="orb-state-indicator"></div>
+                </div>
+            </div>
+            <div class="orb-glow"></div>
+            <div class="orb-particles"></div>
+        </div>
+
+        <!-- Main Dashboard (hidden by default, shown on orb click) -->
+        <div id="dashboard" class="dashboard hidden">
+            <div class="dashboard-header">
+                <div class="dashboard-title">
+                    <span class="logo-mark">SOLARIS</span>
+                    <span class="version">v2.0</span>
+                </div>
+                <div class="dashboard-controls">
+                    <button id="btn-minimize" class="control-btn" title="Minimize to orb" aria-label="Minimize">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                    <button id="btn-close" class="control-btn" title="Close dashboard" aria-label="Close">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="dashboard-body">
+                <!-- Sidebar Navigation -->
+                <nav class="sidebar" id="sidebar">
+                    <ul class="nav-list">
+                        <li><button class="nav-item active" data-view="chat"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span>Chat</span></button></li>
+                        <li><button class="nav-item" data-view="voice"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg><span>Voice</span></button></li>
+                        <li><button class="nav-item" data-view="ai"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg><span>AI Providers</span></button></li>
+                        <li><button class="nav-item" data-view="theme"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><span>Themes</span></button></li>
+                        <li><button class="nav-item" data-view="focus"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg><span>Focus Mode</span></button></li>
+                        <li><button class="nav-item" data-view="serious"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span>Serious Mode</span></button></li>
+                        <li><button class="nav-item" data-view="reminders"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg><span>Reminders</span></button></li>
+                        <li><button class="nav-item" data-view="knowledge"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg><span>Knowledge</span></button></li>
+                        <li><button class="nav-item" data-view="study"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg><span>Study Assistant</span></button></li>
+                        <li><button class="nav-item" data-view="desktop"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><path d="M8 21h8"></path><path d="M12 17v4"></path></svg><span>Desktop Control</span></button></li>
+                        <li><button class="nav-item" data-view="settings"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg><span>Settings</span></button></li>
+                    </ul>
+                </nav>
+
+                <!-- Main Content Area -->
+                <main class="main-content" id="main-content">
+                    <!-- Chat View -->
+                    <section id="view-chat" class="view active">
+                        <div class="chat-container">
+                            <div class="chat-header">
+                                <h2>Conversation</h2>
+                                <div class="chat-status">
+                                    <span class="status-dot" id="chat-status-dot"></span>
+                                    <span id="chat-status-text">Ready</span>
+                                </div>
+                            </div>
+                            <div class="chat-messages" id="chat-messages">
+                                <div class="message assistant">
+                                    <div class="message-avatar">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon></svg>
+                                    </div>
+                                    <div class="message-content">
+                                        <p>Hello! I'm SOLARIS, your personal AI assistant. How can I help you today?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-input-area">
+                                <div class="chat-input-wrapper">
+                                    <button id="btn-voice-input" class="voice-input-btn" title="Voice input (hold to talk)" aria-label="Voice input">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+                                    </button>
+                                    <input type="text" id="chat-input" class="chat-input" placeholder="Ask SOLARIS anything..." autocomplete="off">
+                                    <button id="btn-send" class="send-btn" aria-label="Send message">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                                    </button>
+                                </div>
+                                <div class="chat-hints">
+                                    <span>Try: "Hey Solaris, what's the weather?" or "Open Chrome"</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Voice View -->
+                    <section id="view-voice" class="view">
+                        <div class="voice-container">
+                            <div class="voice-orb-large" id="voice-orb-large">
+                                <div class="voice-orb-ring voice-orb-ring-1"></div>
+                                <div class="voice-orb-ring voice-orb-ring-2"></div>
+                                <div class="voice-orb-ring voice-orb-ring-3"></div>
+                                <div class="voice-orb-center">
+                                    <span class="voice-orb-text">SOLARIS</span>
+                                    <div class="voice-state-text" id="voice-state-text">Click to start listening</div>
+                                </div>
+                            </div>
+                            <div class="voice-controls">
+                                <div class="voice-mode-selector">
+                                    <label>Interaction Mode</label>
+                                    <div class="mode-buttons">
+                                        <button class="mode-btn active" data-mode="push-to-talk">Push-to-Talk</button>
+                                        <button class="mode-btn" data-mode="toggle">Toggle</button>
+                                        <button class="mode-btn" data-mode="wake-word">Wake Word</button>
+                                    </div>
+                                </div>
+                                <div class="voice-style-selector">
+                                    <label>Voice Style</label>
+                                    <div class="style-cards">
+                                        <div class="style-card active" data-style="natural">
+                                            <div class="style-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg></div>
+                                            <div class="style-info">
+                                                <h4>Voice A: Natural</h4>
+                                                <p>Human-like conversational</p>
+                                            </div>
+                                        </div>
+                                        <div class="style-card" data-style="cinematic">
+                                            <div class="style-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon></svg></div>
+                                            <div class="style-info">
+                                                <h4>Voice B: Cinematic</h4>
+                                                <p>Deep, JARVIS-inspired</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="voice-settings">
+                                    <label>Speech Speed</label>
+                                    <input type="range" id="speech-speed" min="0.5" max="2" step="0.1" value="1">
+                                    <span id="speech-speed-value">1.0x</span>
+                                </div>
+                                <div class="voice-settings">
+                                    <label>Microphone</label>
+                                    <select id="mic-select"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- AI Providers View -->
+                    <section id="view-ai" class="view">
+                        <div class="ai-container">
+                            <h2>AI Providers</h2>
+                            <div class="provider-cards">
+                                <div class="provider-card" data-provider="gemini">
+                                    <div class="provider-header">
+                                        <div class="provider-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></div>
+                                        <div class="provider-info">
+                                            <h3>Google Gemini</h3>
+                                            <p>Primary online AI provider</p>
+                                        </div>
+                                    </div>
+                                    <div class="provider-config">
+                                        <label>API Key</label>
+                                        <input type="password" id="gemini-key" placeholder="Enter Gemini API key" autocomplete="off">
+                                        <label>Model</label>
+                                        <select id="gemini-model">
+                                            <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+                                            <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+                                            <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                                            <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-primary" id="btn-test-gemini">Test Connection</button>
+                                </div>
+                                <div class="provider-card" data-provider="ollama">
+                                    <div class="provider-header">
+                                        <div class="provider-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg></div>
+                                        <div class="provider-info">
+                                            <h3>Ollama (Local)</h3>
+                                            <p>Optional local AI - runs offline</p>
+                                        </div>
+                                    </div>
+                                    <div class="provider-config">
+                                        <label>Model</label>
+                                        <select id="ollama-model">
+                                            <option value="llama3.2-vision">Llama 3.2 Vision</option>
+                                            <option value="llama3.2">Llama 3.2</option>
+                                            <option value="mistral">Mistral</option>
+                                            <option value="codellama">Code Llama</option>
+                                            <option value="phi3">Phi-3</option>
+                                        </select>
+                                        <label>Endpoint</label>
+                                        <input type="text" id="ollama-endpoint" value="http://localhost:11434" placeholder="Ollama endpoint">
+                                    </div>
+                                    <button class="btn btn-primary" id="btn-test-ollama">Test Connection</button>
+                                </div>
+                            </div>
+                            <div class="provider-settings">
+                                <h3>Fallback Settings</h3>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="auto-fallback" checked>
+                                    <span>Automatic fallback when primary provider fails</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="preserve-context" checked>
+                                    <span>Preserve conversation context when switching providers</span>
+                                </label>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Themes View -->
+                    <section id="view-theme" class="view">
+                        <div class="theme-container">
+                            <h2>Themes</h2>
+                            <div class="theme-grid" id="theme-grid"></div>
+                            <div class="theme-custom">
+                                <h3>Custom Accent Color</h3>
+                                <input type="color" id="custom-color" value="#5fd4ff">
+                                <button class="btn btn-primary" id="btn-apply-custom">Apply Custom Color</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Focus Mode View -->
+                    <section id="view-focus" class="view">
+                        <div class="focus-container">
+                            <div class="focus-timer">
+                                <div class="timer-circle">
+                                    <svg class="timer-svg" viewBox="0 0 280 280">
+                                        <circle class="timer-bg" cx="140" cy="140" r="120"></circle>
+                                        <circle class="timer-progress" id="timer-progress" cx="140" cy="140" r="120"></circle>
+                                    </svg>
+                                    <div class="timer-display" id="timer-display">25:00</div>
+                                </div>
+                                <div class="timer-controls">
+                                    <button class="btn btn-large" id="btn-timer-start">Start Focus</button>
+                                    <button class="btn btn-secondary" id="btn-timer-pause">Pause</button>
+                                    <button class="btn btn-secondary" id="btn-timer-reset">Reset</button>
+                                </div>
+                                <div class="timer-presets">
+                                    <button class="preset-btn active" data-minutes="25">25 min</button>
+                                    <button class="preset-btn" data-minutes="50">50 min</button>
+                                    <button class="preset-btn" data-minutes="90">90 min</button>
+                                </div>
+                            </div>
+                            <div class="focus-task">
+                                <h3>Current Task</h3>
+                                <textarea id="focus-task" placeholder="What are you working on?"></textarea>
+                                <div class="task-priority">
+                                    <label>Priority</label>
+                                    <select id="task-priority">
+                                        <option value="high">High</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="low">Low</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="focus-settings">
+                                <h3>Focus Settings</h3>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="focus-reduce-animations" checked>
+                                    <span>Reduce animations</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="focus-silence-voice" checked>
+                                    <span>Silence non-essential voice</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="focus-break-reminders" checked>
+                                    <span>Break reminders</span>
+                                </label>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Serious Mode View -->
+                    <section id="view-serious" class="view">
+                        <div class="serious-container">
+                            <div class="serious-header">
+                                <div class="serious-badge">SERIOUS MODE</div>
+                                <h2>Deep Research</h2>
+                                <p class="serious-description">SOLARIS will conduct comprehensive research across multiple sources, verify facts, and deliver a structured report.</p>
+                            </div>
+                            <div class="serious-input">
+                                <label>Research Topic</label>
+                                <textarea id="research-topic" placeholder="e.g., Artificial intelligence safety research, Quantum computing breakthroughs, Climate change mitigation strategies..."></textarea>
+                                <div class="research-options">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="research-verify" checked>
+                                        <span>Verify facts across sources</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="research-conflicts" checked>
+                                        <span>Identify conflicting claims</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="research-sources" checked>
+                                        <span>Include source links and dates</span>
+                                    </label>
+                                </div>
+                                <div class="research-actions">
+                                    <button class="btn btn-large btn-danger" id="btn-start-research">Start Research</button>
+                                    <button class="btn btn-secondary" id="btn-stop-research" disabled>Stop Research</button>
+                                </div>
+                            </div>
+                            <div class="serious-progress" id="serious-progress" style="display: none;">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progress-fill"></div>
+                                </div>
+                                <div class="progress-status" id="progress-status">Initializing research...</div>
+                                <div class="progress-steps" id="progress-steps"></div>
+                            </div>
+                            <div class="serious-report" id="serious-report" style="display: none;">
+                                <h3>Research Report</h3>
+                                <div class="report-content" id="report-content"></div>
+                                <div class="report-actions">
+                                    <button class="btn btn-primary" id="btn-save-report">Save Report</button>
+                                    <button class="btn btn-secondary" id="btn-new-research">New Research</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Reminders View -->
+                    <section id="view-reminders" class="view">
+                        <div class="reminders-container">
+                            <div class="reminders-header">
+                                <h2>Reminders</h2>
+                                <button class="btn btn-primary" id="btn-add-reminder">Add Reminder</button>
+                            </div>
+                            <div class="reminders-list" id="reminders-list">
+                                <div class="reminder-empty">No reminders yet. Click "Add Reminder" to create one.</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Knowledge View -->
+                    <section id="view-knowledge" class="view">
+                        <div class="knowledge-container">
+                            <div class="knowledge-header">
+                                <h2>Knowledge Library</h2>
+                                <div class="knowledge-search">
+                                    <input type="text" id="knowledge-search" placeholder="Search knowledge...">
+                                    <button class="btn btn-secondary" id="btn-knowledge-sync">Sync</button>
+                                </div>
+                            </div>
+                            <div class="knowledge-categories" id="knowledge-categories"></div>
+                            <div class="knowledge-stats">
+                                <div class="stat"><span id="stat-topics">0</span> Topics</div>
+                                <div class="stat"><span id="stat-entries">0</span> Entries</div>
+                                <div class="stat"><span id="stat-verified">0</span> Verified</div>
+                                <div class="stat"><span id="stat-updated">0</span> Updated this week</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Study Assistant View -->
+                    <section id="view-study" class="view">
+                        <div class="study-container">
+                            <h2>Study Assistant</h2>
+                            <div class="study-tools">
+                                <div class="tool-card">
+                                    <div class="tool-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg></div>
+                                    <h3>Explain Concept</h3>
+                                    <p>Step-by-step explanations for any topic</p>
+                                    <button class="btn btn-primary" data-tool="explain">Start</button>
+                                </div>
+                                <div class="tool-card">
+                                    <div class="tool-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg></div>
+                                    <h3>Math Helper</h3>
+                                    <p>Solve and explain math problems</p>
+                                    <button class="btn btn-primary" data-tool="math">Start</button>
+                                </div>
+                                <div class="tool-card">
+                                    <div class="tool-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg></div>
+                                    <h3>Physics & Chemistry</h3>
+                                    <p>Explain scientific concepts</p>
+                                    <button class="btn btn-primary" data-tool="science">Start</button>
+                                </div>
+                                <div class="tool-card">
+                                    <div class="tool-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg></div>
+                                    <h3>Code Explainer</h3>
+                                    <p>Understand programming concepts</p>
+                                    <button class="btn btn-primary" data-tool="code">Start</button>
+                                </div>
+                                <div class="tool-card">
+                                    <div class="tool-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg></div>
+                                    <h3>Summarize Notes</h3>
+                                    <p>Condense your study materials</p>
+                                    <button class="btn btn-primary" data-tool="summarize">Start</button>
+                                </div>
+                                <div class="tool-card">
+                                    <div class="tool-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg></div>
+                                    <h3>Practice Questions</h3>
+                                    <p>Generate quiz questions</p>
+                                    <button class="btn btn-primary" data-tool="practice">Start</button>
+                                </div>
+                                <div class="tool-card">
+                                    <div class="tool-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg></div>
+                                    <h3>Exam Prep</h3>
+                                    <p>Create revision schedules</p>
+                                    <button class="btn btn-primary" data-tool="exam">Start</button>
+                                </div>
+                                <div class="tool-card">
+                                    <div class="tool-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg></div>
+                                    <h3>Read Aloud</h3>
+                                    <p>Text-to-speech for study materials</p>
+                                    <button class="btn btn-primary" data-tool="read">Start</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Desktop Control View -->
+                    <section id="view-desktop" class="view">
+                        <div class="desktop-container">
+                            <h2>Desktop Control</h2>
+                            <div class="desktop-tools">
+                                <div class="tool-section">
+                                    <h3>Launch Applications</h3>
+                                    <div class="app-grid" id="app-grid"></div>
+                                    <button class="btn btn-secondary" id="btn-rescan-apps">Rescan Applications</button>
+                                </div>
+                                <div class="tool-section">
+                                    <h3>Quick Actions</h3>
+                                    <div class="quick-actions">
+                                        <button class="action-btn" data-action="open-chrome">Open Chrome</button>
+                                        <button class="action-btn" data-action="open-youtube">Open YouTube</button>
+                                        <button class="action-btn" data-action="open-github">Open GitHub</button>
+                                        <button class="action-btn" data-action="open-notepad">Open Notepad</button>
+                                        <button class="action-btn" data-action="open-explorer">File Explorer</button>
+                                        <button class="action-btn" data-action="open-taskmgr">Task Manager</button>
+                                        <button class="action-btn" data-action="open-settings">Settings</button>
+                                        <button class="action-btn" data-action="open-calc">Calculator</button>
+                                    </div>
+                                </div>
+                                <div class="tool-section">
+                                    <h3>Custom Command</h3>
+                                    <div class="custom-command">
+                                        <input type="text" id="custom-command" placeholder="e.g., open spotify, launch vscode, open https://example.com in firefox">
+                                        <button class="btn btn-primary" id="btn-run-custom">Execute</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Settings View -->
+                    <section id="view-settings" class="view">
+                        <div class="settings-container">
+                            <h2>Settings</h2>
+                            <div class="settings-sections">
+                                <div class="settings-section">
+                                    <h3>General</h3>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="setting-autostart">
+                                        <span>Start SOLARIS on Windows login</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="setting-minimize-tray">
+                                        <span>Minimize to system tray</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="setting-single-instance">
+                                        <span>Prevent multiple instances</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="setting-hide-terminal">
+                                        <span>Hide terminal window</span>
+                                    </label>
+                                </div>
+                                <div class="settings-section">
+                                    <h3>Voice</h3>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="setting-wake-word">
+                                        <span>Enable wake word ("Hey Solaris")</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="setting-voice-responses">
+                                        <span>Speak responses aloud</span>
+                                    </label>
+                                </div>
+                                <div class="settings-section">
+                                    <h3>Data & Privacy</h3>
+                                    <button class="btn btn-secondary" id="btn-export-data">Export Data</button>
+                                    <button class="btn btn-secondary" id="btn-clear-history">Clear Conversation History</button>
+                                    <button class="btn btn-danger" id="btn-reset-all">Reset All Settings</button>
+                                </div>
+                                <div class="settings-section">
+                                    <h3>About</h3>
+                                    <p>SOLARIS v2.0</p>
+                                    <p>A sophisticated personal desktop AI assistant</p>
+                                    <p>Built with Python, Flask, and modern web technologies</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            </div>
+        </div>
+
+        <!-- Add Reminder Modal -->
+        <div id="reminder-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3>Add Reminder</h3>
+                <form id="reminder-form">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="reminder-title" required placeholder="e.g., Finish science homework">
+                    </div>
+                    <div class="form-group">
+                        <label>Date & Time</label>
+                        <input type="datetime-local" id="reminder-datetime" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Or relative time</label>
+                        <input type="text" id="reminder-relative" placeholder="e.g., in 10 minutes, at 6 PM, tomorrow 9am">
+                    </div>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="reminder-spoken">
+                        <span>Spoken notification</span>
+                    </label>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="btn-cancel-reminder">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Reminder</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Notification Toast Container -->
+        <div id="toast-container" class="toast-container"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
