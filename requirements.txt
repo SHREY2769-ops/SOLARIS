@@ -1,0 +1,6 @@
+flask
+requests
+psutil
+pillow
+edge-tts
+winsdk; sys_platform == "win32"
