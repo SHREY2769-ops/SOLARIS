@@ -1,0 +1,333 @@
+/* SOLARIS - Futuristic Orb & Dashboard Styling */
+:root {
+  --bg: #0a0e17;
+  --bg-subtle: #111827;
+  --fg: #e8edf5;
+  --muted: #6b7c93;
+  --accent: #00d4aa;
+  --accent-glow: rgba(0, 212, 170, 0.4);
+  --error: #ff4d5e;
+  --warning: #ff8a3d;
+  --card: rgba(17, 24, 39, 0.6);
+  --border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  overflow: hidden;
+}
+
+/* Floating Orb */
+#orb {
+  position: fixed;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent) 0%, #00a896 100%);
+  box-shadow: 0 0 30px var(--accent-glow), 0 0 60px rgba(0, 212, 170, 0.2);
+  cursor: grab;
+  z-index: 10000;
+  left: 20px;
+  top: 20px;
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg);
+}
+
+#orb.grabbing {
+  transform: scale(0.95);
+}
+
+#orb.dragging {
+  cursor: grabbing;
+}
+
+#orb.hidden {
+  display: none;
+}
+
+#orb .logo {
+  width: 64px;
+  height: 64px;
+  filter: drop-shadow(0 0 12px var(--accent-glow));
+}
+
+#orb .status {
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--bg);
+  border-radius: 50%;
+  background: var(--error);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Orb states */
+#orb.listening { 
+  box-shadow: 0 0 30px var(--accent-glow), 0 0 60px rgba(0, 212, 170, 0.2), 0 0 20px rgba(255, 77, 94, 0.3);
+}
+#orb.thinking {
+  box-shadow: 0 0 30px #ff6b6b, 0 0 60px rgba(255, 107, 107, 0.2), 0 0 20px rgba(255, 107, 107, 0.1);
+}
+#orb.speaking {
+  box-shadow: 0 0 30px #ffd93d, 0 0 60px rgba(255, 217, 61, 0.2), 0 0 20px rgba(255, 217, 61, 0.1);
+}
+#orb.error {
+  box-shadow: 0 0 30px var(--error), 0 0 60px rgba(255, 77, 94, 0.3);
+}
+
+/* Main application */
+#app {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg);
+  z-index: 9999;
+  overflow: hidden;
+  display: none;
+}
+
+#app.active {
+  display: block;
+}
+
+#app::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 20%, rgba(0, 212, 170, 0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 80%, rgba(155, 123, 255, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Header */
+header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, var(--fg) 0%, var(--muted) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+header h1 .brand {
+  color: var(--accent);
+}
+
+/* Conversation area */
+#conversation {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.message {
+  margin: 12px 0;
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.message.user {
+  background: var(--accent);
+  color: var(--bg);
+  margin-left: auto;
+  border-bottom-right-radius: 2px;
+}
+
+.message.assistant {
+  background: var(--card);
+  border: 1px solid var(--border);
+  margin-right: auto;
+  border-bottom-left-radius: 2px;
+}
+
+.message.system {
+  color: var(--muted);
+  font-style: italic;
+  text-align: center;
+  max-width: 100%;
+}
+
+/* Voice controls */
+#voice-controls {
+  padding: 20px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--card);
+  color: var(--fg);
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+.btn.primary {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.btn.secondary {
+  background: var(--muted);
+}
+
+.btn.warning {
+  background: var(--warning);
+  color: var(--bg);
+}
+
+.btn.error {
+  background: var(--error);
+  color: var(--bg);
+}
+
+/* Input area */
+#input-area {
+  padding: 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+#user-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-subtle);
+  color: var(--fg);
+  font-size: 0.95rem;
+}
+
+#user-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-subtle);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tab {
+  padding: 10px 20px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.tab.active {
+  color: var(--fg);
+  background: var(--accent);
+}
+
+.tab:hover:not(.active) {
+  color: var(--fg);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Settings cards */
+.settings-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.settings-card h3 {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Focus mode */
+.focus-mode #orb {
+  background: linear-gradient(135deg, #3dffa0 0%, #3dffa0 100%);
+  box-shadow: 0 0 30px rgba(61, 255, 160, 0.4);
+}
+
+.focus-mode #orb.listening {
+  box-shadow: 0 0 30px #3dffa0, 0 0 60px rgba(61, 255, 160, 0.2), 0 0 20px rgba(255, 77, 94, 0.3);
+}
+
+/* Serious mode */
+.serious-mode {
+  --accent: #ff4d5e;
+  --accent-glow: rgba(255, 77, 94, 0.4);
+}
+
+.serious-mode #orb {
+  background: linear-gradient(135deg, #ff4d5e 0%, #c82334 100%);
+  box-shadow: 0 0 30px rgba(255, 77, 94, 0.4), 0 0 60px rgba(255, 77, 94, 0.2);
+}
+
+.serious-mode #orb.listening {
+  box-shadow: 0 0 30px #ff4d5e, 0 0 60px rgba(255, 77, 94, 0.2), 0 0 20px rgba(255, 77, 94, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  #conversation .message {
+    max-width: 90%;
+  }
+  
+  #voice-controls {
+    justify-content: flex-start;
+  }
+}
