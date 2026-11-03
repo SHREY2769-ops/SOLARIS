@@ -29,7 +29,7 @@ _NAME = re.escape(config.NAME.lower())
 
 
 def _norm(text):
-    t = text.lower().replace("’", "").replace("'", "")
+    t = text.lower().replace("'", "").replace("'", "")
     t = re.sub(r"[^a-z0-9 ]", " ", t)
     t = re.sub(r"\s+", " ", t).strip()
     prev = None
