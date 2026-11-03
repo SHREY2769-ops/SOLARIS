@@ -26,7 +26,7 @@ def get(name, default=""):
     return os.environ.get(name) or default
 
 
-NAME = get("ASSISTANT_NAME", "JARVIS")
+NAME = get("ASSISTANT_NAME", "SOLARIS")
 PORT = int(get("PORT", "5005"))
 PROVIDER = get("AI_PROVIDER", "gemini").lower()          # gemini or ollama
 GEMINI_KEY = get("GEMINI_API_KEY")

@@ -35,7 +35,7 @@ def _norm(text):
     prev = None
     while prev != t:
         prev = t
-        t = re.sub(rf"^(hey |hi |ok |okay |yo )?({_NAME}|jarvis|assistant) ", "", t)
+        t = re.sub(rf"^(hey |hi |ok |okay |yo )?({_NAME}|jarvis|assistant|solaris) ", "", t)
         t = re.sub(r"^(please|can you|could you|would you|will you|i want you to|i want to|go ahead and|just|now) ", "", t)
     return re.sub(r" (please|for me|now|right now|again)$", "", t)
 

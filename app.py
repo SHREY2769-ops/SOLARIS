@@ -166,7 +166,7 @@ def tts():
 
 
 def _open_window():
-    """Opens JARVIS in its own app-style window (no browser tabs or address bar)."""
+    """Opens SOLARIS in its own app-style window (no browser tabs or address bar)."""
     time.sleep(1.2)
     url = f"http://localhost:{config.PORT}"
     try:
@@ -179,7 +179,7 @@ if __name__ == "__main__":
     print(f"\n  {config.NAME} is starting at http://localhost:{config.PORT}")
     if config.PROVIDER == "gemini" and not config.GEMINI_KEY:
         print("  Note: no Gemini key yet. Commands work, but questions need the key in the .env file.")
-    print("  Keep this window open while you use JARVIS. Press Ctrl+C to stop.\n")
+    print("  Keep this window open while you use SOLARIS. Press Ctrl+C to stop.\n")
     if "--no-window" not in sys.argv:
         threading.Thread(target=_open_window, daemon=True).start()
     app.run(host="127.0.0.1", port=config.PORT, threaded=True)
